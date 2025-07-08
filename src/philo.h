@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 12:43:25 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/08 18:54:02 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/08 19:13:36 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_data
 	int				time_sleep;
 	int				time_count;
 	int				someone_died;
+	long	start_time;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	death_lock;
@@ -65,6 +66,6 @@ int					check_death(t_data *data);
 void				init_philo(t_philo *philo, t_data *data);
 void				aux_init_philo(t_philo *philo);
 void				routine(void *arg);
-long	get_timestamp(void);
+long		get_timestamp(void);
 
 #endif

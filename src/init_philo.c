@@ -6,11 +6,16 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 20:39:39 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/08 18:57:55 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/08 19:19:21 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+long	timestamp_now(t_data *data)
+{
+	return (get_timestamp() - data->start_time);
+} //el timestamp_now se usa cuando se vaya a imprimir algo en pantalla para el tiempo
 
 long	get_timestamp(void)
 {
@@ -20,7 +25,7 @@ long	get_timestamp(void)
 	gettimeofday(&tv, NULL);
 	miliseconds = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 	return (miliseconds);
-}
+} //cuenta cuantos milisegundos tiene el programa corriendo.
 
 void	*routine(void *arg)
 {
@@ -37,7 +42,7 @@ void	*routine(void *arg)
 		print_action(philo, "is sleeping");
 		ft_usleep(philo->data->time_sleep);
 	}
-	return (NULL);
+	return (NULL); //faltan crear las funciones de las routines
 }
 
 void	aux_init_philo(t_philo *philo)
@@ -79,4 +84,4 @@ void	init_philo(t_philo *philo, t_data *data)
 		}
 		i++;
 	}
-}
+} //revisar la liberacion del codigo fugas de memoria en esta parte.
