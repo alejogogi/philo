@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 12:43:25 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/07 20:36:13 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/08 18:54:02 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/time.h>
 
 typedef struct s_data
 {
@@ -30,6 +31,7 @@ typedef struct s_data
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	death_lock;
+	pthread_t	*threads;
 }					t_data;
 
 typedef struct s_philo
@@ -58,5 +60,11 @@ void				init_mutex(t_data *data);
 void				inside_args_data(t_data *data, char **arg);
 void				philo_death(t_data *data);
 int					check_death(t_data *data);
+
+// init philo
+void				init_philo(t_philo *philo, t_data *data);
+void				aux_init_philo(t_philo *philo);
+void				routine(void *arg);
+long	get_timestamp(void);
 
 #endif
