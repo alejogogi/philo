@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:33:56 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 22:40:17 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 22:50:55 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	main(int ac, char **arg)
 	}
 	init_mutex_philo(philo, data->n_philo);
 	init_philo(philo, data);
-	init_monitor(data);
+	init_monitor(data); // falta hacerlo ya revise la rutina y libere memoria bien.
 	free_end(philo);
 	return (0);
 }

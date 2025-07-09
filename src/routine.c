@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 16:47:39 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 22:34:41 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 22:52:46 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,33 @@ void	drop_forks(t_philo *philo)
 	pthread_mutex_unlock(philo->right_fork);
 }
 
-void	*monitor(void *arg)
-{
-	
-}
+// void *monitor(void *arg)
+// {
+// 	t_philo *philos = (t_philo *)arg;
+// 	t_data *data = philos[0].data;
+
+// 	while (1)
+// 	{
+// 		for (int i = 0; i < data->n_philo; i++)
+// 		{
+// 			long now = get_time();
+// 			long since_meal = now - philos[i].last_meal;
+
+// 			if (since_meal > data->time_die)
+// 			{
+// 				pthread_mutex_lock(&data->death_lock);
+// 				if (!data->someone_died)
+// 				{
+// 					data->someone_died = 1;
+// 					pthread_mutex_lock(&data->print_lock);
+// 					printf("%ld %d died\n", now - data->start_time, philos[i].id);
+// 					pthread_mutex_unlock(&data->print_lock);
+// 				}
+// 				pthread_mutex_unlock(&data->death_lock);
+// 				return NULL;
+// 			}
+// 		}
+// 		usleep(1000); // chequeo frecuente
+// 	}
+// 	return NULL;
+// } // revisar bien y hacer pruebas.
