@@ -6,15 +6,23 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 16:43:00 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 17:03:49 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:29:45 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_action(t_philo *philo, char *str)
+void	print_action(t_philo *philo, char *action)
 {
-	
+	long	timestamp;
+
+	pthread_mutex_lock(&philo->data->print_lock);
+	if (!check_death(philo->data))
+	{
+		timestamp = timestamp_now(philo->data);
+		printf("%ld %d %s\n", timestamp, philo->id + 1, action);
+	}
+	pthread_mutex_unlock(&philo->data->print_lock);
 }// hacer la funcion de imprimir, y poner dentro el detector de muerte.
 
 void	philo_death(t_data *data)

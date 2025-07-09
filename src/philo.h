@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 12:43:25 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 16:42:32 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:50:56 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,16 @@ void				inside_args_data(t_data *data, char **arg);
 void				init_philo(t_philo *philo, t_data *data);
 void				aux_init_philo(t_philo *philo);
 void				*routine(void *arg);
+void				check_onephilo(t_philo *philo);
 
 // function_philo_aux:
 int					check_death(t_data *data);
 long		timestamp_now(t_data *data);
 long		get_timestamp(void);
 void				philo_death(t_data *data);
+void				print_action(t_philo *philo, char *action);
+
+//routine
+void				ft_usleep(int time_die, t_data *data);
 
 #endif

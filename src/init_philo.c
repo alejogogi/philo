@@ -6,19 +6,30 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 20:39:39 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 16:56:42 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 18:43:50 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	check_onephilo(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	print_action(philo, "has taken a fork");
+	philo_death(philo->data);
+	pthread_mutex_unlock(philo->left_fork);
+}
 
 void	*routine(void *arg)
 {
 	t_philo	*philo = (t_philo *)arg;
 
 	if (philo->data->n_philo == 1)
+	{
 		check_onephilo(philo);
-	else if (philo->id % 2 == 0)
+		return (NULL);
+	}
+	else if (philo->id % 2 == 0) //esto retrasa a los filosofos pares para que no todos tomen los tenedores al inicio.
 		usleep(1000);
 	while (!check_death(philo->data))
 	{
@@ -27,7 +38,7 @@ void	*routine(void *arg)
 		eat(philo);
 		drop_forks(philo);
 		print_action(philo, "is sleeping");
-		ft_usleep(philo->data->time_sleep);
+		ft_usleep(philo->data->time_sleep, philo->data);
 	}
 	return (NULL); //faltan crear las funciones de las routines
 }

@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:06:45 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 16:41:20 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 19:06:20 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,9 @@ void	free_all(t_data *data)
 	pthread_mutex_destroy(&data->print_lock);
 	destroy_forks(data, data->n_philo);
 	free(data);
+}
+
+void	free_end(t_philo *philo)
+{
+	
 }
