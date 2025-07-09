@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:33:56 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 19:06:32 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 22:40:17 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ int	main(int ac, char **arg)
 		free_all(data);
 		exit_error();
 	}
+	init_mutex_philo(philo, data->n_philo);
 	init_philo(philo, data);
+	init_monitor(data);
 	free_end(philo);
 	return (0);
 }

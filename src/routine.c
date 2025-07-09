@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 16:47:39 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 19:04:45 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 22:34:41 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,21 @@ void	take_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(philo->last_meal);
+	pthread_mutex_lock(philo->meal_lock);
 	philo->last_meal = timestamp_now(philo->data);
-	pthread_mutex_unlock(philo->last_meal);
-	print_action(philo, "is eating");
-	ft_usleep(philo->data->time_die, philo->data);
-	pthread_mutex_lock(philo->meals_eaten);
 	philo->meals_eaten++;
-	pthread_mutex_unlock(philo->meals_eaten);
+	pthread_mutex_unlock(philo->meal_lock);
+	print_action(philo, "is eating");
+	ft_usleep(philo->data->time_eat, philo->data);
 }
 
 void	drop_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+}
+
+void	*monitor(void *arg)
+{
+	
 }

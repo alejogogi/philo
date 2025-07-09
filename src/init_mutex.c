@@ -6,11 +6,30 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:38:29 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 16:43:36 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 22:40:31 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	init_mutex_philo(t_philo *philos, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		if (pthread_mutex_init(&philos[i].meal_lock, NULL) != 0)
+		{
+			destroy_meals(philos, i);
+			pthread_mutex_destroy(&philos->data->print_lock);
+			pthread_mutex_destroy(&philos->data->death_lock);
+			destroy_forks(philos->data, philos->data->n_philo);
+			aux_exit(philos->data);
+		}
+		i++;
+	}
+}
 
 void	inside_args_data(t_data *data, char **arg)
 {

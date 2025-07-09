@@ -6,11 +6,23 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 20:39:39 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 18:43:50 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 22:16:08 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	init_monitor(t_data *data)
+{
+	pthread_t	monitor_therad;
+
+	if (pthread_create(&monitor_therad, NULL, monitor, data) != 0)
+	{
+		philo_death(data);
+		return ;
+	}
+	pthread_join(monitor_therad, NULL);
+}
 
 void	check_onephilo(t_philo *philo)
 {
@@ -51,8 +63,8 @@ void	aux_init_philo(t_philo *philo)
 	while (i < philo->data->n_philo)
 	{
 		philo[i].id = i;
-		philo[i].left_fork = i;
-		philo[i].right_fork = (i + 1) % philo->data->n_philo;	
+		philo[i].left_fork = &philo->data->forks[i];
+		philo[i].right_fork = &philo->data->forks[(i + 1) % philo->data->n_philo];	
 		philo[i].last_meal = get_timestamp();
 		philo[i].meals_eaten = 0;
 		philo[i].data = philo->data;
