@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:06:45 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/07 20:23:36 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 16:41:20 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@ void	destroy_forks(t_data *data, int n)
 		i++;
 	}
 	free(data->forks);
+}
+
+void	destroy_threads(t_data *data, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		pthread_join(data->threads[i], NULL);
+		i++;
+	}
 }
 
 void	aux_exit(t_data *data)

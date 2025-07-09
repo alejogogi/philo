@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 12:43:25 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/08 19:13:36 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 16:42:32 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_philo
 {
 	int	id;
 	int	left_fork;
-	int	right_fork;
+	int	right_fork;								
 	int	meals_eaten;
 	long	last_meal;
 	pthread_t		thread;
@@ -47,25 +47,29 @@ typedef struct s_philo
 
 }					t_philo;
 
-// functions aux:
+// functions_aux:
 int					ft_atoi_safe(char *str);
 
-// free mem:
+// free_mem:
 void				exit_error(void);
 void				aux_exit(t_data *data);
 void				destroy_forks(t_data *data, int n);
 void				free_all(t_data *data);
+void				destroy_threads(t_data *data, int n);
 
-// init mutex:
+// init_mutex:
 void				init_mutex(t_data *data);
 void				inside_args_data(t_data *data, char **arg);
-void				philo_death(t_data *data);
-int					check_death(t_data *data);
 
-// init philo
+// init_philo:
 void				init_philo(t_philo *philo, t_data *data);
 void				aux_init_philo(t_philo *philo);
-void				routine(void *arg);
+void				*routine(void *arg);
+
+// function_philo_aux:
+int					check_death(t_data *data);
+long		timestamp_now(t_data *data);
 long		get_timestamp(void);
+void				philo_death(t_data *data);
 
 #endif

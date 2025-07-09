@@ -6,28 +6,11 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:38:29 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/07 20:24:05 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/09 16:43:36 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	philo_death(t_data *data)
-{
-	pthread_mutex_lock(&data->death_lock);
-	data->someone_died = 1;
-	pthread_mutex_unlock(&data->death_lock);
-}
-
-int	check_death(t_data *data)
-{
-	int	status;
-
-	pthread_mutex_lock(&data->death_lock);
-	status = data->someone_died;
-	pthread_mutex_unlock(&data->death_lock);
-	return (status);
-}
 
 void	inside_args_data(t_data *data, char **arg)
 {
@@ -60,7 +43,7 @@ void	init_mutex(t_data *data)
 	else if (pthread_mutex_init(&data->death_lock, NULL) != 0)
 	{
 		pthread_mutex_destroy(&data->print_lock);
-		destroy_forks(data, data->n_philo);
+		destroy_forks(data, data->n_philo);			
 		aux_exit(data);
 	}
 	data->someone_died = 0;
