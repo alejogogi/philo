@@ -6,26 +6,40 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:38:29 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 22:40:31 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/10 17:22:00 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_mutex_philo(t_philo *philos, int n)
+void	wait_threads(t_data *data, t_philo *philo)
 {
 	int	i;
 
 	i = 0;
+	while (i < data->n_philo)
+	{
+		pthread_join(philo[i].thread, NULL);
+		i++;
+	}
+}
+
+void	init_mutex_philo(t_philo *philos, int n)
+{
+	int	i = 0;
+
 	while (i < n)
 	{
-		if (pthread_mutex_init(&philos[i].meal_lock, NULL) != 0)
+		philos[i].meal_lock = malloc(sizeof(pthread_mutex_t));
+		if (!philos[i].meal_lock)
 		{
 			destroy_meals(philos, i);
-			pthread_mutex_destroy(&philos->data->print_lock);
-			pthread_mutex_destroy(&philos->data->death_lock);
-			destroy_forks(philos->data, philos->data->n_philo);
-			aux_exit(philos->data);
+			free_all(philos->data, philos);
+		}
+		if (pthread_mutex_init(philos[i].meal_lock, NULL) != 0)
+		{
+			destroy_meals(philos, i);
+			free_all(philos->data, philos);
 		}
 		i++;
 	}
@@ -50,20 +64,19 @@ void	init_mutex(t_data *data)
 	i = 0;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->n_philo);
 	if (!data->forks)
-		aux_exit(data);
+		aux_exit(data, 0);
 	while (i < data->n_philo)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-			destroy_forks(data, i);
+			aux_exit(data, i);
 		i++;
 	}
 	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
-		destroy_forks(data, data->n_philo);
+		aux_exit(data, data->n_philo);
 	else if (pthread_mutex_init(&data->death_lock, NULL) != 0)
 	{
 		pthread_mutex_destroy(&data->print_lock);
-		destroy_forks(data, data->n_philo);			
-		aux_exit(data);
+		aux_exit(data, data->n_philo);
 	}
 	data->someone_died = 0;
 }

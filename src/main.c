@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:33:56 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 22:50:55 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/10 18:06:40 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,15 @@ int	main(int ac, char **arg)
 	if (!data)
 		exit_error();
 	inside_args_data(data, arg);
-	init_mutex(data);
+	init_mutex(data);//no hay leaks de memoria.
 	philo = malloc(sizeof(t_philo) * data->n_philo);
 	if (!philo)
-	{
-		free_all(data);
-		exit_error();
-	}
+		free_all(data, philo);//no hay leaks.
 	init_mutex_philo(philo, data->n_philo);
 	init_philo(philo, data);
 	init_monitor(data); // falta hacerlo ya revise la rutina y libere memoria bien.
+	wait_threads(data, philo); // esperar a que terminen los hilos.
+	pthread_join(data->monitor, NULL);
 	free_end(philo);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 16:47:39 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 22:52:46 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/10 16:25:47 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,33 +55,40 @@ void	drop_forks(t_philo *philo)
 	pthread_mutex_unlock(philo->right_fork);
 }
 
-// void *monitor(void *arg)
-// {
-// 	t_philo *philos = (t_philo *)arg;
-// 	t_data *data = philos[0].data;
+void	*monitor(void *arg)
+{
+	t_philo *philo = (t_philo*) arg;
+	t_data *data = philo[0].data;
+	int	i;
+	int	finished_eating;
+	long	time_last_meal;
 
-// 	while (1)
-// 	{
-// 		for (int i = 0; i < data->n_philo; i++)
-// 		{
-// 			long now = get_time();
-// 			long since_meal = now - philos[i].last_meal;
-
-// 			if (since_meal > data->time_die)
-// 			{
-// 				pthread_mutex_lock(&data->death_lock);
-// 				if (!data->someone_died)
-// 				{
-// 					data->someone_died = 1;
-// 					pthread_mutex_lock(&data->print_lock);
-// 					printf("%ld %d died\n", now - data->start_time, philos[i].id);
-// 					pthread_mutex_unlock(&data->print_lock);
-// 				}
-// 				pthread_mutex_unlock(&data->death_lock);
-// 				return NULL;
-// 			}
-// 		}
-// 		usleep(1000); // chequeo frecuente
-// 	}
-// 	return NULL;
-// } // revisar bien y hacer pruebas.
+	while (!check_death(data))//revisamos que ninguno este muerto
+	{
+		i = 0;
+		finished_eating = 0;
+		while (i < data->n_philo)
+		{
+			pthread_mutex_lock(philo[i].meal_lock);
+			time_last_meal = get_timestamp() - philo->last_meal;
+			if (time_last_meal > data->time_die)
+			{
+				print_action(&philo[i], "died");
+				philo_death(data);
+				pthread_mutex_unlock(philo[i].meal_lock);
+				return (NULL);
+			}
+			if (data->time_count != -1 && philo[i].meals_eaten >= data->time_count)
+				finished_eating++;
+			pthread_mutex_unlock(philo[i].meal_lock);
+			i++;
+		}
+		if (data->time_count != -1 && finished_eating == data->n_philo)
+		{
+			philo_death(data);
+			return (NULL);
+		}
+		usleep(1000);
+	}
+	return(NULL);
+}

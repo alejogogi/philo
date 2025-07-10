@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 20:39:39 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 22:16:08 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/10 18:06:06 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,11 @@
 
 void	init_monitor(t_data *data)
 {
-	pthread_t	monitor_therad;
-
-	if (pthread_create(&monitor_therad, NULL, monitor, data) != 0)
+	if (pthread_create(&data->monitor, NULL, monitor, data) != 0)
 	{
 		philo_death(data);
 		return ;
 	}
-	pthread_join(monitor_therad, NULL);
 }
 
 void	check_onephilo(t_philo *philo)
@@ -78,21 +75,15 @@ void	init_philo(t_philo *philo, t_data *data)
 
 	data->threads = malloc(sizeof(pthread_t) * data->n_philo);
 	if (!data->threads)
-	{
-		free_all(data);
-		exit_error();
-	}
+		philo_free(philo, data);
 	aux_init_philo(philo);
 	i = 0;
 	while (i < data->n_philo)
 	{
 		if (pthread_create(&data->threads[i], NULL, routine, &philo[i]) != 0)
 		{
-			pthread_mutex_destroy(&data->print_lock);
-			pthread_mutex_destroy(&data->death_lock);
 			destroy_threads(data, i);
-			destroy_forks(data, data->n_philo);
-			aux_exit(data);
+			philo_free(philo, data);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 12:43:25 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 22:36:47 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/10 18:09:08 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_data
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	death_lock;
 	pthread_t	*threads;
+	pthread_t	*monitor;
 }					t_data;
 
 typedef struct s_philo
@@ -53,16 +54,18 @@ int					ft_atoi_safe(char *str);
 
 // free_mem:
 void				exit_error(void);
-void				aux_exit(t_data *data);
+void				aux_exit(t_data *data, int n);
 void				destroy_forks(t_data *data, int n);
-void				free_all(t_data *data);
+void				free_all(t_data *data, t_philo *philos);
 void				destroy_threads(t_data *data, int n);
 void				destroy_meals(t_philo *philo, int n);
+void				philo_free(t_philo *philo, t_data *data);
 
 // init_mutex:
 void				init_mutex(t_data *data);
 void				inside_args_data(t_data *data, char **arg);
 void				init_mutex_philo(t_philo *philos, int n);
+void				wait_threads(t_data *data, t_philo *philo);
 
 // init_philo:
 void				init_philo(t_philo *philo, t_data *data);
