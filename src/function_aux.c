@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 16:43:00 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/09 18:29:45 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/10 20:25:51 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,24 @@ int	check_death(t_data *data)
 	return (status);
 }// esta revisa si el philo sigue con vida, de no estar con vida se destruye el programa y los hilos.
 
-long	timestamp_now(t_data *data)
+// long    timestamp_now(t_data *data)
+// {
+//     struct timeval  tv;
+//     gettimeofday(&tv, NULL);
+//     return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000)) - data->start_time;
+// }
+
+long    timestamp_now(t_data *data)
 {
-	return (get_timestamp() - data->start_time);
-} //esta funcion me da el tiempo actual que lleva el programa, porque la variable start_time ya tiene el tiempo.
+    	struct timeval  tv;
+    	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000)) - data->start_time;
+}
+
+// long	timestamp_now(t_data *data)
+// {
+// 	return (get_timestamp() - data->start_time);
+// } //esta funcion me da el tiempo actual que lleva el programa, porque la variable start_time ya tiene el tiempo.
 
 long	get_timestamp(void)
 {

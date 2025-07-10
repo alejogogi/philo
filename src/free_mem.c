@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 18:06:45 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/10 17:51:12 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/10 21:44:18 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	destroy_meals(t_philo *philo, int n)
 	i = 0;
 	while (i < n)
 	{
-		pthread_mutex_destroy(&philo[i].meal_lock);
+		pthread_mutex_destroy(philo[i].meal_lock);
 		free(philo[i].meal_lock);
 		i++;
 	}
@@ -51,18 +51,18 @@ void	destroy_threads(t_data *data, int n)
 	free(data->threads);
 }
 
+void	exit_error(void)
+{
+	printf("Error\n");
+	exit(1);
+}//primero
+
 void	aux_exit(t_data *data, int n)
 {
 	destroy_forks(data, n);
 	free(data);
 	exit_error();
 }//segundo.
-
-void	exit_error(void)
-{
-	printf("Error\n");
-	exit(1);
-}//primero
 
 void	free_all(t_data *data, t_philo *philo)
 {
@@ -76,6 +76,11 @@ void	free_all(t_data *data, t_philo *philo)
 void	philo_free(t_philo *philo, t_data *data)
 {
 	destroy_meals(philo, data->n_philo);
-	free(data->threads);
 	free_all(data, philo);
 }//cuarto.
+
+void	free_end(t_philo *philo, t_data *data)
+{
+	destroy_threads(data, data->n_philo);
+	philo_free(philo, data);
+}//quinto final.

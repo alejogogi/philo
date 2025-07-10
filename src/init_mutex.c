@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 19:38:29 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/10 17:22:00 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/10 20:26:28 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ void	wait_threads(t_data *data, t_philo *philo)
 	}
 }
 
-void	init_mutex_philo(t_philo *philos, int n)
+void	init_mutex_philo(t_philo *philos, t_data *data, int n)
 {
 	int	i = 0;
-
+	
 	while (i < n)
 	{
+		philos[i].data = data;
 		philos[i].meal_lock = malloc(sizeof(pthread_mutex_t));
 		if (!philos[i].meal_lock)
 		{
@@ -51,6 +52,7 @@ void	inside_args_data(t_data *data, char **arg)
 	data->time_die = ft_atoi_safe(arg[2]);
 	data->time_eat = ft_atoi_safe(arg[3]);
 	data->time_sleep = ft_atoi_safe(arg[4]);
+	data->start_time = get_timestamp();
 	if (arg[5])
 		data->time_count = ft_atoi_safe(arg[5]);
 	else

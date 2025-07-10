@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 16:47:39 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/10 16:25:47 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/10 20:40:26 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,8 @@
 
 void	ft_usleep(int time_die, t_data *data)
 {
-	long	start;
-
-	start = get_timestamp();
 	while (!check_death(data) && timestamp_now(data) < time_die)
-		usleep(100);
+		usleep(5000);
 }
 
 void	take_forks(t_philo *philo)
@@ -26,9 +23,9 @@ void	take_forks(t_philo *philo)
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->left_fork);
-		print_action(philo, "has taken a fork");
 		pthread_mutex_lock(philo->right_fork);
-		print_action(philo, "has take a fork");
+		print_action(philo, "has taken left a fork");
+		print_action(philo, "has take a right fork");
 	}
 	else
 	{
@@ -37,6 +34,7 @@ void	take_forks(t_philo *philo)
 		pthread_mutex_lock(philo->left_fork);
 		print_action(philo, "has take a fork");		
 	}
+	usleep(300000);
 }
 
 void	eat(t_philo *philo)
@@ -46,13 +44,17 @@ void	eat(t_philo *philo)
 	philo->meals_eaten++;
 	pthread_mutex_unlock(philo->meal_lock);
 	print_action(philo, "is eating");
-	ft_usleep(philo->data->time_eat, philo->data);
+	//ft_usleep(philo->data->time_eat, philo->data);
+	usleep(300000);
 }
 
 void	drop_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+	print_action(philo, "has relase a fork");
+	print_action(philo, "has relase a fork");
+	usleep(300000);
 }
 
 void	*monitor(void *arg)
@@ -70,7 +72,7 @@ void	*monitor(void *arg)
 		while (i < data->n_philo)
 		{
 			pthread_mutex_lock(philo[i].meal_lock);
-			time_last_meal = get_timestamp() - philo->last_meal;
+			time_last_meal = timestamp_now(data); //get_timestamp() - philo->last_meal;
 			if (time_last_meal > data->time_die)
 			{
 				print_action(&philo[i], "died");
